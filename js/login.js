@@ -1,19 +1,28 @@
-// login.js
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("loginForm");
 
-document.getElementById("loginForm").addEventListener("submit", function(e) {
-  e.preventDefault();
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
 
-  const username = document.getElementById("usernameLogin").value;
-  const password = document.getElementById("passwordLogin").value;
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value;
 
-  const users = JSON.parse(localStorage.getItem("users")) || [];
-  const user = users.find(u => u.username === username && u.password === password);
+    const users = JSON.parse(localStorage.getItem("users")) || {};
 
-  if (user) {
-    alert("Inicio de sesión exitoso");
-    // Aquí podrías redirigir al dashboard o página principal
-    window.location.href = "dashboard.html";  // o la página que desees
-  } else {
-    alert("Usuario o contraseña incorrectos");
-  }
+    if (!users[username]) {
+      alert("Usuario no encontrado.");
+      return;
+    }
+
+    if (users[username].password !== password) {
+      alert("Contraseña incorrecta.");
+      return;
+    }
+
+    // Guardar sesión
+    localStorage.setItem("loggedUser", username);
+
+    // Redirigir al dashboard
+    window.location.href = "dashboard.html";
+  });
 });
