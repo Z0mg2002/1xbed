@@ -1,26 +1,24 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>1xbed - Iniciar sesión</title>
-  <link rel="stylesheet" href="assets/css/style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>1xbed Casino</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
-<body class="dark-mode">
-  <div class="login-container">
-    <h1>Bienvenido a 1xbed</h1>
-    <form id="loginForm">
-      <input type="text" placeholder="Usuario" id="loginUser" required />
-      <input type="password" placeholder="Contraseña" id="loginPass" required />
-      <label><input type="checkbox" id="keepSession" /> Mantener sesión iniciada</label>
-      <button type="submit">Iniciar sesión</button>
-      <p>¿No tenés cuenta? <a href="register.html">Registrate acá</a></p>
+<body>
+  <div class="auth-container">
+    <h1>Bienvenido a <span class="casino-name">1xbed</span></h1>
+    <form id="registerForm">
+      <input type="text" placeholder="Nombre de usuario" required>
+      <input type="password" placeholder="Contraseña" required>
+      <input type="password" placeholder="Repetir contraseña" required>
+      <label>
+        <input type="checkbox"> Mantener sesión iniciada
+      </label>
+      <button type="submit">Registrarse</button>
     </form>
+    <p>¿Ya tenés cuenta? <a href="#">Iniciar sesión</a></p>
   </div>
-  <script src="js/main.js"></script>
-</body>
-</html>
-
-  <script src="js/main.js"></script>
 </body>
 </html>
