@@ -17,64 +17,31 @@
   </header>
 
   <section class="apuesta">
-    <h2>Pabellón FC vs Almirante Brown</h2>
+    <h2>Pabellón FC vs <span id="teamRival">Almirante Brown</span></h2>
+    <div class="equipos">
+      <img src="assets/images/escudo_pabellon.png" alt="Escudo Pabellón FC" class="escudo" />
+      <span>VS</span>
+      <img src="assets/images/escudo_generico.png" alt="Escudo Genérico" class="escudo" />
+    </div>
     <div id="cuotasDinamicas" class="opciones">
-      <!-- Cuotas generadas automáticamente -->
+      <!-- Cuotas generadas dinámicamente -->
     </div>
     <div id="temporizador">Tiempo restante: <span id="countdown">30</span>s</div>
+
+    <!-- Sección de administración (solo visible para admins) -->
     <div id="adminControls" style="display: none;">
       <h3>Opciones de Admin</h3>
       <button onclick="abrirApuestas()">🔓 Abrir apuestas</button>
       <button onclick="resolverApuesta('pabellon')">✅ Pabellón Gana</button>
       <button onclick="resolverApuesta('empate')">🤝 Empate</button>
       <button onclick="resolverApuesta('almirante')">🏁 Almirante Gana</button>
-      <div class="gestion">
-        <input type="text" id="userGestion" placeholder="Usuario" />
-        <input type="number" id="modificarPuntos" placeholder="Cantidad" />
-        <button onclick="modificarCamaPoints(true)">➕ Agregar</button>
-        <button onclick="modificarCamaPoints(false)">➖ Quitar</button>
+
+      <!-- Cambiar nombre del equipo rival -->
+      <div class="cambiarEquipo">
+        <input type="text" id="nuevoRival" placeholder="Nuevo nombre del rival" />
+        <button onclick="cambiarNombreRival()">Cambiar Nombre del Rival</button>
       </div>
-    </div>
-  </section>
 
-  <aside class="leaderboard">
-    <h3>Top Usuarios</h3>
-    <ul id="leaderboardList"></ul>
-  </aside>
-
-  <section class="streaming">
-    <div id="streamContainer"></div>
-    <div id="twitterFeed">
-      <a class="twitter-timeline" data-width="300" data-height="400" href="<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>1xbed - Casino</title>
-  <link rel="stylesheet" href="assets/css/style.css" />
-</head>
-<body class="dark-mode" style="background-image: url('assets/images/fondo1.jpg');">
-  <header>
-    <img src="assets/images/logo.png" alt="Logo 1xbed" class="logo-principal" />
-    <div class="user-info">
-      <span id="usernameDisplay"></span>
-      <span id="pointsDisplay">100 CamaPoints</span>
-      <img src="assets/images/icono_moneda.png" class="icono-puntos" />
-    </div>
-  </header>
-
-  <section class="apuesta">
-    <h2>Pabellón FC vs Almirante Brown</h2>
-    <div id="cuotasDinamicas" class="opciones">
-      <!-- Cuotas generadas automáticamente -->
-    </div>
-    <div id="temporizador">Tiempo restante: <span id="countdown">30</span>s</div>
-    <div id="adminControls" style="display: none;">
-      <h3>Opciones de Admin</h3>
-      <button onclick="abrirApuestas()">🔓 Abrir apuestas</button>
-      <button onclick="resolverApuesta('pabellon')">✅ Pabellón Gana</button>
-      <button onclick="resolverApuesta('empate')">🤝 Empate</button>
-      <button onclick="resolverApuesta('almirante')">🏁 Almirante Gana</button>
       <div class="gestion">
         <input type="text" id="userGestion" placeholder="Usuario" />
         <input type="number" id="modificarPuntos" placeholder="Cantidad" />
@@ -102,17 +69,57 @@
 
   <script src="https://platform.twitter.com/widgets.js"></script>
   <script src="js/main.js"></script>
-</body>
-</html>
-">Tweets by bedbitz_</a>
-    </div>
-  </section>
 
-  <div class="config">
-    <button onclick="toggleFondo()">🎛 Cambiar fondo</button>
-  </div>
+  <script>
+    // Lista de administradores (solo los administradores pueden cambiar el nombre del rival)
+    const admins = ["adminUser1", "adminUser2"]; // Aquí añades tus usuarios admin
 
-  <script src="https://platform.twitter.com/widgets.js"></script>
-  <script src="js/main.js"></script>
+    // Verificar si el usuario actual es admin (esto depende de cómo manejas el login)
+    const currentUser = "adminUser1"; // Este debe ser el nombre del usuario actual
+
+    // Mostrar los controles de admin si el usuario es admin
+    if (admins.includes(currentUser)) {
+      document.getElementById("adminControls").style.display = "block";
+    }
+
+    // Función para cambiar el nombre del rival
+    function cambiarNombreRival() {
+      const nuevoRival = document.getElementById("nuevoRival").value;
+      if (nuevoRival) {
+        // Cambiar el nombre en el DOM
+        document.getElementById("teamRival").innerText = nuevoRival;
+        
+        // Almacenar el nombre actualizado en el localStorage para persistencia
+        localStorage.setItem("nombreRival", nuevoRival);
+
+        // Actualizar las cuotas
+        actualizarCuotas();
+      }
+    }
+
+    // Función para actualizar las cuotas dinámicamente
+    function actualizarCuotas() {
+      const cuotas = {
+        pabellon: (Math.random() * 5).toFixed(2), // Ejemplo de cuota aleatoria
+        empate: (Math.random() * 5).toFixed(2),
+        almirante: (Math.random() * 5).toFixed(2)
+      };
+      
+      document.getElementById("cuotasDinamicas").innerHTML = `
+        <div>Gana Pabellón FC: ${cuotas.pabellon}x</div>
+        <div>Empate: ${cuotas.empate}x</div>
+        <div>Gana ${document.getElementById("teamRival").innerText}: ${cuotas.almirante}x</div>
+      `;
+    }
+
+    // Cargar el nombre del rival desde el localStorage cuando la página se recarga
+    window.onload = function() {
+      const nombreRival = localStorage.getItem("nombreRival");
+      if (nombreRival) {
+        document.getElementById("teamRival").innerText = nombreRival;
+      }
+      actualizarCuotas();
+    }
+  </script>
 </body>
 </html>
