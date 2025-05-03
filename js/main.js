@@ -108,3 +108,19 @@ function toggleFondo() {
     document.body.style.backgroundImage = "url('assets/images/fondo1.jpg')";
   }
 }
+// ... (todo tu código actual)
+
+// Agregar al final:
+document.addEventListener("DOMContentLoaded", () => {
+  const users = JSON.parse(localStorage.getItem("users")) || {};
+  const loggedUser = localStorage.getItem("loggedUser");
+
+  if (!loggedUser || !users[loggedUser]) {
+    alert("No has iniciado sesión.");
+    window.location.href = "login.html";
+    return;
+  }
+
+  document.getElementById("usernameDisplay").textContent = loggedUser;
+  document.getElementById("pointsDisplay").textContent = `${users[loggedUser].points} CamaPoints`;
+});
